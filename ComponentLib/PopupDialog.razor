@@ -1,0 +1,6 @@
+<div class="popup-container">
+    @foreach (var dialog in dialogs)
+    {
+        <PopupDialogContainer @key="@dialog" Dialog="@dialog" ShowMask="@(dialog == dialogs.LastOrDefault())" />
+    }
+</div>

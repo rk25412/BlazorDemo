@@ -1,0 +1,46 @@
+<div class="@Dialog.Options.WrapperCssClass">
+    @if (ShowMask)
+    {
+        <div class="modal-backdrop" style="pointer-events: none;"></div>
+    }
+    <div class="modal show @Dialog.Options.CssClass" tabindex="-1" role="dialog" @ref="@dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                @if (Dialog.Options.ShowTitle)
+                {
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            @if (Dialog.Options.TitleContent is not null)
+                            {
+                                @Dialog.Options.TitleContent(Service)
+                            }
+                            else
+                            {
+                                <h5>@Dialog.Title</h5>
+                            }
+                        </div>
+                        @if (Dialog.Options.ShowClose)
+                        {
+                            <button type="button" class="btn-close" @onclick:preventDefault="true" @onclick="Close"
+                                @onkeydown="@OnKeyPress"></button>
+                        }
+                    </div>
+                }
+                <div class="modal-body @Dialog.Options.ContentCssClass">
+                    @if (Dialog.Options.ChildContent is not null)
+                    {
+                        @Dialog.Options.ChildContent(Service)
+                    }
+                    else
+                    {
+                        @ChildContent
+                    }
+                </div>
+                @* <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> *@
+            </div>
+        </div>
+    </div>
+</div>

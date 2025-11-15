@@ -1,0 +1,90 @@
+﻿@page "/"
+@using ComponentLib
+@inject DialogService DialogService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="OpenAlert1">Open Alert 1</button>
+    <button class="btn btn-primary" @onclick="OpenAlert2">Open Alert 2</button>
+</div>
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="OpenConfirm1">Open Confirm 1</button>
+    <button class="btn btn-primary" @onclick="OpenConfirm2">Open Confirm 2</button>
+</div>
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="OpenDialogInline">Inline Dialog</button>
+    <button class="btn btn-primary" @onclick="OpenDialogWithAnotherComponent">Dialog with Custom Component</button>
+</div>
+
+@code {
+    async Task OpenAlert1()
+    {
+        var confirm = await DialogService.Alert("MY new Message", "My New Title",
+        new AlertOptions { OkButtonText = "New Button Text!" });
+        Console.WriteLine(confirm);
+    }
+
+    async Task OpenAlert2()
+    {
+        RenderFragment customContent = builder =>
+        {
+            int seq = 0;
+            builder.OpenElement(seq++, "div");
+            builder.OpenElement(seq++, "h2");
+            builder.AddContent(seq++, "This is custom content inside the alert dialog.");
+            builder.CloseElement();
+            builder.CloseElement();
+        };
+        var confirm = await DialogService.Alert(customContent, "Alert Title");
+        Console.WriteLine(confirm);
+    }
+
+    async Task OpenConfirm1()
+    {
+        var confirm = await DialogService.Confirm("Are you sure you want to proceed?", "Confirm Action");
+        Console.WriteLine(confirm);
+    }
+
+    async Task OpenConfirm2()
+    {
+        RenderFragment customContent = builder =>
+        {
+            int seq = 0;
+            builder.OpenElement(seq++, "div");
+            builder.OpenElement(seq++, "h2");
+            builder.AddContent(seq++, "Please confirm that you want to proceed with this action.");
+            builder.CloseElement();
+            builder.CloseElement();
+        };
+        var confirm = await DialogService.Confirm(customContent, "Custom Confirm");
+        Console.WriteLine(confirm);
+    }
+
+    async Task OpenDialogInline()
+    {
+        await DialogService.OpenAsync("Inline Dialog", ds => builder =>
+        {
+            int seq = 0;
+            builder.OpenElement(seq++, "div");
+            builder.OpenElement(seq++, "h2");
+            builder.AddContent(seq++, "This is an inline dialog content.");
+            builder.CloseElement();
+            builder.CloseElement();
+        });
+
+        await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
+    }
+
+    async Task OpenDialogWithAnotherComponent()
+    {
+        await DialogService.OpenAsync<CustomComponent>("Custom Component Dialog");
+
+        await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
+    }
+}
