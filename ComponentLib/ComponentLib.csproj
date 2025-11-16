@@ -7,7 +7,7 @@
     <Version>1.0.0</Version>
     <Authors>Ravi Prasad</Authors>
     <Description>A reusable Razor UI library.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression> <!-- Or other license -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>razor;ui;component;library</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

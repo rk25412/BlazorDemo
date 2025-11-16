@@ -1,3 +1,15 @@
+@using ComponentLib
+@inject DialogService DialogService
+
 <h3>CustomComponent</h3>
 
 <p>This is the CustomComponent component.</p>
+
+<button class="btn btn-primary" @onclick="@ClosePopup">Close Popup</button>
+
+@code {
+    async Task ClosePopup()
+    {
+        DialogService.Close(null);
+    }
+}

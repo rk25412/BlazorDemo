@@ -32,22 +32,18 @@ Welcome to your new app.
 
     async Task OpenAlert2()
     {
-        RenderFragment customContent = builder =>
-        {
-            int seq = 0;
-            builder.OpenElement(seq++, "div");
-            builder.OpenElement(seq++, "h2");
-            builder.AddContent(seq++, "This is custom content inside the alert dialog.");
-            builder.CloseElement();
-            builder.CloseElement();
-        };
+        RenderFragment customContent = GetMessage();
         var confirm = await DialogService.Alert(customContent, "Alert Title");
         Console.WriteLine(confirm);
     }
 
     async Task OpenConfirm1()
     {
-        var confirm = await DialogService.Confirm("Are you sure you want to proceed?", "Confirm Action");
+        var confirm = await DialogService.Confirm("Are you sure you want to proceed?", "Confirm Action", new ConfirmOptions
+        {
+            OkButtonText = "Yes, Proceed",
+            CancelButtonText = "No, Cancel"
+        });
         Console.WriteLine(confirm);
     }
 
@@ -68,23 +64,25 @@ Welcome to your new app.
 
     async Task OpenDialogInline()
     {
-        await DialogService.OpenAsync("Inline Dialog", ds => builder =>
-        {
-            int seq = 0;
-            builder.OpenElement(seq++, "div");
-            builder.OpenElement(seq++, "h2");
-            builder.AddContent(seq++, "This is an inline dialog content.");
-            builder.CloseElement();
-            builder.CloseElement();
-        });
+        await DialogService.OpenAsync("Inline Dialog", ds => @<div>Some Text <b>Message</b></div>);
 
-        await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
+        // await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
     }
 
     async Task OpenDialogWithAnotherComponent()
     {
         await DialogService.OpenAsync<CustomComponent>("Custom Component Dialog");
 
-        await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
+        // await JSRuntime.InvokeVoidAsync("alert", "Dialog Closed");
+    }
+
+    RenderFragment GetMessage()
+    {
+        return __builder =>
+        {
+            <text>
+                Some <b>message</b>!
+            </text>
+        };
     }
 }

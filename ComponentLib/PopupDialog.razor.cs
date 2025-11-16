@@ -47,7 +47,6 @@ public partial class PopupDialog : IDisposable
         if (lastDialog != null)
         {
             dialogs.Remove(lastDialog);
-            // if (dialogs.Count == 0) await JSRuntime.InvokeAsync<string>("Radzen.closeDialog");
         }
 
         await InvokeAsync(StateHasChanged);
